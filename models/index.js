@@ -26,11 +26,19 @@ sequelize.authenticate()
 })
 .catch(err => {
     console.log('Error is '+err);
-})
+});
 
 const db = {};
 
 db.Sequelize = Sequelize
 db.sequelize = sequelize
 
-db.bloglist = require('./allBlogsModel.js')(sequelize, DataTypes)
+db.users = require('./allUsersModel.js')(sequelize, DataTypes);
+db.bloglist = require('./allBlogsModel.js')(sequelize, DataTypes);
+
+db.sequelize.sync({ force: false })
+.then(() => {
+    console.log('Database Sync done');
+});
+
+module.exports = db;
