@@ -25,21 +25,30 @@ app.use(express.urlencoded({extended: true }));
 // blog router
 const blog_router = require('./routers/blogRoutes.js');
 
-app.use('/api/posts', blog_router);
+app.use('/api/v1/posts', blog_router);
 
 // user router
 const user_router = require('./routers/userRoutes.js');
 
-app.use('/api/users', user_router);
+app.use('/api/v1/users', user_router);
 
-// Testing API
-app.get('/', (req, res) => {
-    res.json({ message: 'hello from api' });
-});
+// test router
+const test_router = require('./routers/testRoutes.js');
+
+app.use('/api/tests', test_router);
 
 //port
 const PORT = process.env.PORT || 3000;
 
+// Handling Errors
+app.use((err, req, res, next) => {
+    // console.log(err);
+    err.statusCode = err.statusCode || 500;
+    err.message = err.message || "Internal Server Error";
+    res.status(err.statusCode).json({
+      message: err.message,
+    });
+});
 //Server
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

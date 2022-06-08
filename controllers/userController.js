@@ -1,55 +1,40 @@
-const db = require('../models');
-
+//const db = require('../models');
+const userService = require('../services/userServices');
 //create main model
 
-const user = db.users
+// Get all user
+const get_AllUsers = async (req, res, next) =>{
+    const data = await userService.getUser(req, res, next);
+    res.status(200).send(data);
+    //console.log(data);
+};
 
-const addUser  = async (req, res) => {
-    let info = {
-        name: req.body.name,
-        email: req.body.email,
-    }
-
-    const Users = await user.create(info);
-    res.status(201).send(Users);
-    console.log(Users);
-}
+//create new user
+const create_User = async (req, res, next) =>{
+    const data = await userService.createUser(req, res, next);
+    res.status(201).send(data);
+    //console.log(data);
+};
 
 
-// get all blogs
-const getAllUsers = async (req, res) => {
-    let users = await user.findAll({});
-    res.status(200).send(users); 
-}
+//update user
+const update_User = async (req, res, next) =>{
+    const data = await userService.updateUser(req, res, next);
+    res.status(202).send(data);
+    //console.log(data);
+};
 
-// get one blogs
-const getOneUser = async (req, res) => {
-    let id  = req.params.id;
-    let users = await user.findOne({
-        where: {id:id}
-    })
-    res.status(200).send(users); 
-}
 
-// update blogs
-const updateUser = async (req, res) => {
-    let id  = req.params.id;
-    let users = await user.update(req.body, 
-        {where: {id: id}});
-    res.status(202).send(users); 
-}
-
-// Delete blogs
-const deleteUser = async (req, res) => {
-    let id  = req.params.id;
-    let users = await user.destroy({where: {id:id}});
-    res.status(204).send('Blog is deleted'); 
-}
+//delete user
+const delete_User = async (req, res, next) =>{
+    const data = await userService.deleteUser(req, res, next);
+    res.status(204).send('User deleted');
+    console.log('User deleted');
+};
 
 module.exports = {
-    addUser,
-    getAllUsers,
-    getOneUser,
-    updateUser,
-    deleteUser,
-}
+    get_AllUsers, 
+    create_User,
+    update_User,
+    delete_User
+};
