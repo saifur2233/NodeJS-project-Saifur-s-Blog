@@ -2,6 +2,6 @@ const testController = require('../controllers/testController.js');
 
 const router = require('express').Router();
 
-router.get('/', testController.get_allBlogs);
+router.post('/', testController.new_User);
 
 module.exports = router;

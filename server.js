@@ -32,10 +32,13 @@ const user_router = require('./routers/userRoutes.js');
 
 app.use('/api/v1/users', user_router);
 
-// test router
-// const test_router = require('./routers/testRoutes.js');
+// // auth router
+// const _router = require('./routers/authRoutes');
+// app.use('/api/v1/signup', _router);
 
-// app.use('/api/tests', test_router);
+// user router
+const auth_router = require('./routers/authRoutes');
+app.use('/api/v1', auth_router);
 
 //port
 const PORT = process.env.PORT || 3000;
