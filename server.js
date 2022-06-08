@@ -33,9 +33,9 @@ const user_router = require('./routers/userRoutes.js');
 app.use('/api/v1/users', user_router);
 
 // test router
-const test_router = require('./routers/testRoutes.js');
+// const test_router = require('./routers/testRoutes.js');
 
-app.use('/api/tests', test_router);
+// app.use('/api/tests', test_router);
 
 //port
 const PORT = process.env.PORT || 3000;
