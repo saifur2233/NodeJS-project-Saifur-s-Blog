@@ -4,7 +4,7 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-
+const dotenv = require('dotenv').config();
 const app = express();
 
 
@@ -41,7 +41,7 @@ const auth_router = require('./routers/authRoutes');
 app.use('/api/v1', auth_router);
 
 //port
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT;
 
 // Handling Errors
 app.use((err, req, res, next) => {
