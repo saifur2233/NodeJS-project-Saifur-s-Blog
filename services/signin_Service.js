@@ -39,7 +39,7 @@ const login = async (req, res, next) => {
         }
     } catch (error) {
         res.status(401).json({
-            "error": "Unauthorized Access "
+            "error": error
             });
     }
 };
