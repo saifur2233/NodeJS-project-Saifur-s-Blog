@@ -9,7 +9,7 @@ const getBlog = async (req, res, next) => {
 }
 
 // Create blog
-const createBlog = async (req, res, next) => {
+const createBlog = async (req, res, next) => { // === send the body only -> same goes for all other method in this file
     let info = {
         title: req.body.title,
         author: req.body.author,

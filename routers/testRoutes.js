@@ -1,7 +1,7 @@
-const testController = require('../controllers/testController.js');
+const testController = require('../controllers/testController');
 
 const router = require('express').Router();
 
-router.post('/', testController.new_User);
+router.post('/test', testController.createBlog);
 
 module.exports = router;

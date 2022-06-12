@@ -33,9 +33,8 @@ const db = {};
 db.Sequelize = Sequelize
 db.sequelize = sequelize
 
-db.users = require('./allUsersModel.js')(sequelize, DataTypes);
 db.user = require('./UserModel.js')(sequelize, DataTypes);
-db.bloglist = require('./allBlogsModel.js')(sequelize, DataTypes);
+db.bloglist = require('./BlogsModel.js')(sequelize, DataTypes);
 
 db.sequelize.sync({ force: false })
 .then(() => {

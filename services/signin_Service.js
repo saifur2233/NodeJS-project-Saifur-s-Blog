@@ -20,7 +20,7 @@ const login = async (req, res, next) => {
                     username: user[0].username,
                     userId: user[0]._id,
                 }, 'saifur', {
-                    expiresIn: '1h'
+                    expiresIn: '12h'
                 });
                 res.status(200).json({
                     "access_token": token,

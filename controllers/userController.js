@@ -10,17 +10,17 @@ const get_AllUsers = async (req, res, next) =>{
 };
 
 //create new user
-const create_User = async (req, res, next) =>{
-    const data = await userService.createUser(req, res, next);
-    res.status(201).send(data);
-    //console.log(data);
-};
+// const create_User = async (req, res, next) =>{
+//     const data = await userService.createUser(req, res, next);
+//     res.status(201).send(data);
+//     //console.log(data);
+// };
 
 
 //update user
 const update_User = async (req, res, next) =>{
     const data = await userService.updateUser(req, res, next);
-    res.status(202).send(data);
+    res.status(201).send(data);
     //console.log(data);
 };
 
@@ -28,13 +28,11 @@ const update_User = async (req, res, next) =>{
 //delete user
 const delete_User = async (req, res, next) =>{
     const data = await userService.deleteUser(req, res, next);
-    res.status(204).send('User deleted');
-    console.log('User deleted');
+    res.status(204);
 };
 
 module.exports = {
     get_AllUsers, 
-    create_User,
     update_User,
     delete_User
 };
