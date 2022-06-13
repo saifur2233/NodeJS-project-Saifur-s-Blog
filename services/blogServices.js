@@ -1,40 +1,46 @@
 const db = require('../models');
-
 const blog = db.bloglist
 
-//get blog
-const getBlog = async (req, res, next) => {
-    let blogs = await blog.findAll({});
-    return blogs;
-}
-
 // Create blog
-const createBlog = async (req, res, next) => { // === send the body only -> same goes for all other method in this file
+const createblog = async (data) => { // === send the body only -> same goes for all other method in this file
     let info = {
-        title: req.body.title,
-        author: req.body.author,
-        description: req.body.description,
+        title: data.title,
+        author: data.author,
+        description: data.description,
     }
 
     const blogs = await blog.create(info);
     return blogs;
 }
 
+//get all blog
+const getAllBlog = async () => {
+    let blogs = await blog.findAll({});
+    return blogs;
+}
+
+// search blog by id
+const searchById = async (blogId) => {
+    let id = blogId;
+    let blogs = await blog.findOne({
+        where: {id: id}
+    });
+    return blogs;
+}
 
 //update blog
-const updateBlog = async (req, res, next) => {
-
-    let id  = req.params.id;
-    let blogs = await blog.update(req.body, 
+const updateBlog = async (dataId, data) => {
+    let id = dataId;
+    let blogs = await blog.update(data, 
         {where: {id: id}});
     return blogs;
 }
 
 //Delete blog
-const deleteBlog = async (req, res, next) => {
-    let id  = req.params.id;
+const deleteBlog = async (data) => {
+    let id = data;
     let blogs = await blog.destroy({where: {id:id}});
     return blogs;
 }
 
-module.exports = {getBlog, createBlog, updateBlog, deleteBlog};
+module.exports = {createblog, getAllBlog, searchById, updateBlog, deleteBlog};

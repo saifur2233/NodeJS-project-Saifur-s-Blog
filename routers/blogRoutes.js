@@ -5,6 +5,8 @@ const router = require('express').Router();
 
 router.get('/', blogController.get_allBlogs);
 
+router.get('/:id', blogController.search_blogById);
+
 router.post('/', checkLogin, blogController.create_Blog);
 
 router.put('/:id', checkLogin, blogController.update_Blog);

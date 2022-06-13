@@ -3,62 +3,25 @@ const db = require('../models');
 const Users = db.user
 
 //get blog
-const getUser = async (req, res, next) => {
-    try {
-        let user = await Users.findAll({});
-        res.status(200).json({
-            "users ": user
-        });
-    } catch (error) {
-        res.status(200).json({
-            "error": "failure!"
-        });    
-    }
-
-}
-
-// Create blog
-// const createUser = async (req, res, next) => {
-//     let info = {
-//         name: req.body.name,
-//         email: req.body.email,
-//     }
-
-//     const user = await Users.create(info);
-//     return user;
-// }
+const getAllUser = async (req, res, next) => {
+    let users = await Users.findAll({});
+    return users;
+};
 
 
 //update blog
-const updateUser = async (req, res, next) => {
-
-    let id  = req.params.id;
-    try {
-        let user = await Users.update(req.body, 
-            {where: {id: id}});
-            res.status(200).json({
-                "users ": user
-            });
-    } catch (error) {
-        res.status(200).json({
-            "error": "failure!"
-        });
-    }
+const updateUser = async (userId, data) => {
+    let id = userId;
+    let user = await Users.update(data, 
+        {where: {id: id}});
+    return user;
 };
 
 //Delete blog
-const deleteUser = async (req, res, next) => {
-    let id  = req.params.id;
-    try {
-        let user = await Users.destroy({where: {id:id}});
-        res.status(200).json({
-            "message ": "user deleted"
-        });
-    } catch (error) {
-        res.status(200).json({
-            "error": "Deletion failure!"
-        });
-    }
+const deleteUser = async (userId) => {
+    let id  = userId;
+    let user = await Users.destroy({where: {id:id}});
+    return user;
 }
 
-module.exports = {getUser, updateUser, deleteUser};
+module.exports = {getAllUser, updateUser, deleteUser};

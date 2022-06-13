@@ -1,40 +1,73 @@
-//const db = require('../models');
 const blogService = require('../services/blogServices.js');
-//create main model
+const catchAsync = require('../utilities/catchAsync');
+const AppError = require('../utilities/appError');
+// Create blog
+exports.create_Blog = catchAsync(async (req, res, next) => {
+    const newBlog = await blogService.createblog(req.body);
 
-// Get all blogs
-const get_allBlogs = async (req, res, next) =>{
-    const data = await blogService.getBlog(req, res, next);
-    res.status(200).send(data);
-    //console.log(data);
-};
+        res.status(201).json({
+            status: 'success',
+            data: {
+                data: newBlog
+            }
+        });
+});
 
-//create new blog
-const create_Blog = async (req, res, next) =>{
-    const data = await blogService.createBlog(req, res, next);
-    res.status(201).send(data);
-    //console.log(data);
-};
+// get all blog
+exports.get_allBlogs = catchAsync(async (req, res, next) => {
+    const blogs = await blogService.getAllBlog();
 
+        res.status(200).json({
+            status: 'success',
+            All_Blog: {
+                data: blogs
+            }
+        });
+});
 
-//update blog
-const update_Blog = async (req, res, next) =>{
-    const data = await blogService.updateBlog(req, res, next);
-    res.status(200).send(data); // === why 202?
-    //console.log(data);
-};
+// search blog by id
+exports.search_blogById = catchAsync(async (req, res, next) => {
+    const blogs = await blogService.searchById(req.params.id);
 
+    if(!blogs){
+        return next(new AppError('No blog found with that ID', 404));
+    }
 
+    res.status(200).json({
+        status: 'success',
+        data: {
+            data: blogs
+        }
+    });
+});
+
+// update blog
+exports.update_Blog = catchAsync(async (req, res, next) => {
+    const blogs = await blogService.updateBlog(req.params.id, req.body);
+
+    if(!blogs){
+        return next(new AppError('No blog found with that ID', 404));
+    }
+    
+    res.status(200).json({
+        status: 'success',
+        update_data: {
+            data: blogs
+        }
+    });
+});
 
 //delete blog
-const delete_Blog = async (req, res, next) =>{
-    const data = await blogService.deleteBlog(req, res, next); // === don't send these to service class
-    res.status(204); // === fix this
-};
+exports.delete_Blog = catchAsync(async (req, res, next) => {
+    const blogs = await blogService.deleteBlog(req.params.id);
 
-module.exports = {
-    get_allBlogs, 
-    create_Blog,
-    update_Blog,
-    delete_Blog
-};
+    if(!blogs){
+        return next(new AppError('No blog found with that ID', 404));
+    }
+
+    res.status(204).json({
+        status: 'success',       
+    });
+});
+
+

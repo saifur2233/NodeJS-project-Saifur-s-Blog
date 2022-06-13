@@ -1,38 +1,32 @@
-//const db = require('../models');
-const userService = require('../services/userServices');
-//create main model
+const userService = require('../services/userServices.js');
+const catchAsync = require('../utilities/catchAsync');
 
-// Get all user
-const get_AllUsers = async (req, res, next) =>{
-    const data = await userService.getUser(req, res, next);
-    res.status(200).send(data);
-    //console.log(data);
-};
+// get all user
+exports.get_AllUsers = catchAsync(async (req, res, next) => {
+    const users = await userService.getAllUser();
 
-//create new user
-// const create_User = async (req, res, next) =>{
-//     const data = await userService.createUser(req, res, next);
-//     res.status(201).send(data);
-//     //console.log(data);
-// };
+        res.status(200).json({
+            status: 'success',
+            All_Users: {
+                data: users
+            }
+        });
+});
 
+// update blog
+exports.update_User = catchAsync(async (req, res, next) => {
+    const user = await userService.updateUser(req.params.id, req.body);
 
-//update user
-const update_User = async (req, res, next) =>{
-    const data = await userService.updateUser(req, res, next);
-    res.status(201).send(data);
-    //console.log(data);
-};
-
+        res.status(200).json({
+            status: 'success',
+            update_data: {
+                data: user
+            }
+        });
+});
 
 //delete user
-const delete_User = async (req, res, next) =>{
-    const data = await userService.deleteUser(req, res, next);
-    res.status(204);
-};
-
-module.exports = {
-    get_AllUsers, 
-    update_User,
-    delete_User
-};
+exports.delete_User = catchAsync(async (req, res, next) => {
+    const user = await userService.deleteUser(req.params.id);
+        res.status(204);
+});

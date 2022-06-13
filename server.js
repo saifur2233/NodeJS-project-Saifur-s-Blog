@@ -16,19 +16,15 @@ var corsOptions = {
 
 // Middleware
 app.use(cors(corsOptions));
-
 app.use(express.json());
-
 app.use(express.urlencoded({extended: true }));
 
 // blog router
 const blog_router = require('./routers/blogRoutes.js');
-
 app.use('/api/v1/posts', blog_router);
 
 // user router
 const user_router = require('./routers/userRoutes.js');
-
 app.use('/api/v1/users', user_router);
 
 const auth_router = require('./routers/authRoutes');
