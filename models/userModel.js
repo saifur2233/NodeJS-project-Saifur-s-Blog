@@ -1,6 +1,3 @@
-// const { DataTypes } = require("sequelize/types");
-// const { sequelize } = require(".");
-
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('users', {
     name: {
@@ -24,8 +21,7 @@ module.exports = (sequelize, DataTypes) => {
     status: {
       type: DataTypes.STRING,
       defaultValue: 'inactive'
-      // enum: ["active", "inactive"],
     }
   })
-  return User
-}
+  return User;
+};

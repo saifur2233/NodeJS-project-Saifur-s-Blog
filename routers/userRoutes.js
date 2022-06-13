@@ -3,10 +3,10 @@ const checkLogin = require('../middlewares/checkLogin')
 
 const router = require('express').Router()
 
-router.get('/', userController.get_AllUsers)
+router.get('/', userController.getAllUsers)
 
-router.put('/:id', checkLogin, userController.update_User)
+router.put('/:id', checkLogin, userController.updateUser)
 
-router.delete('/:id', checkLogin, userController.delete_User)
+router.delete('/:id', checkLogin, userController.deleteUser)
 
 module.exports = router

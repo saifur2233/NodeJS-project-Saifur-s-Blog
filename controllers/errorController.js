@@ -5,7 +5,7 @@ const sendErrorDev = (err, res) => {
     message: err.message,
     stack: err.stack
   })
-}
+};
 
 const sendErrorProd = (err, res) => {
   // operational error, send to client
@@ -24,7 +24,7 @@ const sendErrorProd = (err, res) => {
       message: 'Something went wrong!'
     })
   }
-}
+};
 
 module.exports = (err, req, res, next) => {
   if (!res.headersSent) {
@@ -37,4 +37,4 @@ module.exports = (err, req, res, next) => {
       sendErrorProd(err, res)
     }
   }
-}
+};

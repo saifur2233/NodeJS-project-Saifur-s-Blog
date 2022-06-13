@@ -13,12 +13,11 @@ exports.login = catchAsync(async (req, res, next) => {
     return next(new AppError('Please provide username and password!', 400))
   }
   // 2. check if user exists && password is correct
-
   const user = await User.findOne({
     where: {
       username
     }
-  })
+  });
 
   if (user) {
     const isValidPassword = await bcrypt.compare(password, user.password)
@@ -39,5 +38,4 @@ exports.login = catchAsync(async (req, res, next) => {
   } else {
     return next(new AppError('Invalid username/passoword', 401))
   }
-  // 3. If everything ok, send token to client
-})
+});

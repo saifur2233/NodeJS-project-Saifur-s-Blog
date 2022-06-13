@@ -3,14 +3,14 @@ const checkLogin = require('../middlewares/checkLogin')
 
 const router = require('express').Router()
 
-router.get('/', blogController.get_allBlogs)
+router.get('/', blogController.getAllBlogs)
 
-router.get('/:id', blogController.search_blogById)
+router.post('/', blogController.createBlog)
 
-router.post('/', blogController.create_Blog)
+router.get('/:id', blogController.searchBlogById)
 
-router.put('/:id', checkLogin, blogController.update_Blog)
+router.put('/:id', checkLogin, blogController.updateBlog)
 
-router.delete('/:id', checkLogin, blogController.delete_Blog)
+router.delete('/:id', checkLogin, blogController.deleteBlog)
 
 module.exports = router;

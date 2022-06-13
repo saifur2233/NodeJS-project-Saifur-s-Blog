@@ -1,15 +1,15 @@
 const signupService = require('../services/signupService')
-const signinService = require('../services/signin_Service')
+const signinService = require('../services/signinService')
 const catchAsync = require('../utilities/catchAsync')
 const AppError = require('../utilities/appError')
 
 exports.userSignUp = catchAsync(async (req, res, next) => {
-  const data = await signupService.registration(req.body)
+  const { user, token } = await signupService.registration(req.body)
   res.status(201).json({
     status: 'success',
-    // access_token: token,
     data: {
-      user: data
+      accessToken: token,
+      data: user
     }
   });
 });

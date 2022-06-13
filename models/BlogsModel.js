@@ -1,6 +1,3 @@
-// const { DataTypes } = require("sequelize/types");
-// const { sequelize } = require(".");
-
 module.exports = (sequelize, DataTypes) => {
   const blog = sequelize.define('bloglist', {
     title: {
@@ -16,5 +13,5 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     }
   })
-  return blog
-}
+  return blog;
+};
