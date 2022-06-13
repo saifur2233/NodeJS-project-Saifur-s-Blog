@@ -1,27 +1,26 @@
-const db = require('../models');
+const db = require('../models')
 
 const Users = db.user
 
-//get blog
+// get blog
 const getAllUser = async (req, res, next) => {
-    let users = await Users.findAll({});
-    return users;
-};
-
-
-//update blog
-const updateUser = async (userId, data) => {
-    let id = userId;
-    let user = await Users.update(data, 
-        {where: {id: id}});
-    return user;
-};
-
-//Delete blog
-const deleteUser = async (userId) => {
-    let id  = userId;
-    let user = await Users.destroy({where: {id:id}});
-    return user;
+  const users = await Users.findAll({})
+  return users
 }
 
-module.exports = {getAllUser, updateUser, deleteUser};
+// update blog
+const updateUser = async (userId, data) => {
+  const id = userId
+  const user = await Users.update(data,
+    { where: { id } })
+  return user
+}
+
+// Delete blog
+const deleteUser = async (userId) => {
+  const id = userId
+  const user = await Users.destroy({ where: { id } })
+  return user
+}
+
+module.exports = { getAllUser, updateUser, deleteUser }

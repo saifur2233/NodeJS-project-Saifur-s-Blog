@@ -1,7 +1,7 @@
-const testController = require('../controllers/testController');
+const testController = require('../controllers/testController')
 
-const router = require('express').Router();
+const router = require('express').Router()
 
-router.post('/test', testController.createBlog);
+router.post('/test', testController.login)
 
-module.exports = router;
+module.exports = router

@@ -1,48 +1,46 @@
-const db = require('../models');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+// dependencies
+const db = require('../models')
+const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 const User = db.user
 
-
 // Create user
-const login = async (req, res, next) => {
-    try {
-        const user = await User.findAll(
-            {where: 
-                {username: req.body.username}
-            });
-    
-        if(user && user.length > 0) {
-            const isValidPassword = await bcrypt.compare(req.body.password, user[0].password);
-    
-            if(isValidPassword) {
-                //generate token
-                const token = jwt.sign({
-                    username: req.body.username,
-                    id: req.body.id,
-                }, process.env.JWT_SECRET, {
-                    expiresIn: process.env.JWT_EXPIRES_TIME
-                });
-                res.status(200).json({
-                    "access_token": token,
-                    "message": "login successfully"
-                });
-                
-            } else {
-                res.status(401).json({
-                    "error": "Authentication Failed!... "
-                });
-            }
-        } else {
-            res.status(401).json({
-                "error": "Unauthorized Access "
-                });
-        }
-    } catch (error) {
-        res.status(401).json({
-            "error": error
-            });
-    }
-};
+const login = async (signinData) => {
+  const { username, password } = signinData
+  // 1. Check if username and password exit
+  if (!username) {
+    return null
+  }
+  if (!password) {
+    return null
+  }
+  // 2. check if user exists && password is correct
 
-module.exports = {login};
+  const user = await User.findOne({
+    where: {
+      username
+    }
+  })
+
+  if (user) {
+    const isValidPassword = await bcrypt.compare(password, user.password)
+    if (isValidPassword) {
+      // 3. If everything ok, send token to client
+      // Generate token
+      const token = jwt.sign({
+        username: user.username,
+        id: user.id
+      }, process.env.JWT_SECRET, {
+        expiresIn: process.env.JWT_EXPIRES_TIME
+      })
+
+      return token
+    } else {
+      return null
+    }
+  } else {
+    return null
+  }
+}
+
+module.exports = { login }
