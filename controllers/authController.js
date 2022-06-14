@@ -1,10 +1,10 @@
-const signupService = require('../services/signupService')
-const signinService = require('../services/signinService')
-const catchAsync = require('../utilities/catchAsync')
-const AppError = require('../utilities/appError')
+const signupService = require('../services/signupService');
+const signinService = require('../services/signinService');
+const catchAsync = require('../utilities/catchAsync');
+const AppError = require('../utilities/AppError');
 
-exports.userSignUp = catchAsync(async (req, res, next) => {
-  const { user, token } = await signupService.registration(req.body)
+exports.signUp = catchAsync(async (req, res, next) => {
+  const { user, token } = await signupService.registration(req.body);
   res.status(201).json({
     status: 'success',
     data: {
@@ -14,8 +14,8 @@ exports.userSignUp = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.userSignIn = catchAsync(async (req, res, next) => {
-  const data = await signinService.login(req.body)
+exports.signIn = catchAsync(async (req, res, next) => {
+  const data = await signinService.login(req.body);
   if (!data) {
     return next(new AppError('Unauthorized Access', 401))
   }

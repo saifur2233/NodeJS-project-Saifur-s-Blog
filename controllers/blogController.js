@@ -1,6 +1,6 @@
 const blogService = require('../services/blogServices.js');
 const catchAsync = require('../utilities/catchAsync');
-const AppError = require('../utilities/appError');
+const AppError = require('../utilities/AppError');
 
 exports.createBlog = catchAsync(async (req, res, next) => {
   const blog = await blogService.createblog(req.body);
@@ -39,7 +39,6 @@ exports.searchBlogById = catchAsync(async (req, res, next) => {
   });
 });
 
-// update blog
 exports.updateBlog = catchAsync(async (req, res, next) => {
   const blog = await blogService.updateBlog(req.params.id, req.body);
 

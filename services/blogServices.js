@@ -6,7 +6,7 @@ const createblog = async (data) => {
     title: data.title,
     author: data.author,
     description: data.description
-  }
+  };
 
   const blogs = await blog.create(info);
   return blogs;

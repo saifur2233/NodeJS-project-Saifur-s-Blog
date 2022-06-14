@@ -1,6 +1,5 @@
-const dbConfig = require('../dbconfig/config.js')
-
-const { Sequelize, DataTypes } = require('sequelize')
+const dbConfig = require('../dbconfig/config.js');
+const { Sequelize, DataTypes } = require('sequelize');
 
 const sequelize = new Sequelize(
   dbConfig.DB,
@@ -17,7 +16,7 @@ const sequelize = new Sequelize(
       idle: dbConfig.pool.idle
     }
   }
-)
+);
 
 sequelize.authenticate()
   .then(() => {
@@ -25,19 +24,19 @@ sequelize.authenticate()
   })
   .catch(err => {
     console.log('Error is ' + err)
-  })
+  });
 
-const db = {}
+const db = {};
 
-db.Sequelize = Sequelize
-db.sequelize = sequelize
+db.Sequelize = Sequelize;
+db.sequelize = sequelize;
 
-db.user = require('./UserModel.js')(sequelize, DataTypes)
-db.bloglist = require('./BlogsModel.js')(sequelize, DataTypes)
+db.user = require('./userModel.js')(sequelize, DataTypes);
+db.bloglist = require('./blogModel.js')(sequelize, DataTypes);
 
 db.sequelize.sync({ force: false })
   .then(() => {
     console.log('Database Sync done')
-  })
+  });
 
-module.exports = db
+module.exports = db;

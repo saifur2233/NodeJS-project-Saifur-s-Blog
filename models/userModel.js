@@ -22,6 +22,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       defaultValue: 'inactive'
     }
-  })
+  });
   return User;
 };
