@@ -1,5 +1,5 @@
 const blogController = require('../controllers/blogController.js');
-const checkLogin = require('../middlewares/checkLogin');
+const protectRoutes = require('../middlewares/protectRoutes');
 
 const router = require('express').Router();
 
@@ -11,7 +11,7 @@ router
 router
   .route('/:id')
   .get(blogController.searchBlogById)
-  .put(checkLogin, blogController.updateBlog)
-  .delete(checkLogin, blogController.deleteBlog);
+  .put(protectRoutes, blogController.updateBlog)
+  .delete(protectRoutes, blogController.deleteBlog);
 
 module.exports = router;

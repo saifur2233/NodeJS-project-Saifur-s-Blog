@@ -3,6 +3,7 @@ const catchAsync = require('../utilities/catchAsync');
 const AppError = require('../utilities/AppError');
 const db = require('../models/index');
 const User = db.user;
+const Blog = db.bloglist;
 
 const protectRoutes = catchAsync(async (req, res, next) => {
   let token;
@@ -23,8 +24,7 @@ const protectRoutes = catchAsync(async (req, res, next) => {
   const { username, userId } = decoded;
 
   // 3. check if user still exists
-  const requestRoutes = 'myblog';
-  if (requestRoutes == 'myuser') {
+  if (requestRoutes == 'user') {
     const freshUser = await User.findOne({
       where: {
         username,
@@ -44,7 +44,7 @@ const protectRoutes = catchAsync(async (req, res, next) => {
     } else {
       return next(new AppError('Invalid user request', 401));
     }
-  } else if (requestRoutes == 'myblog') {
+  } else if (requestRoutes == 'blog') {
     const findblog = await Blog.findOne({
       where: {
         id: req.params.id,

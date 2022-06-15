@@ -4,9 +4,14 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    author: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
+    authorUsername: {
+      type: DataTypes.STRING,
+      //allowNull: false,
+      // reference: {
+      //   model: users,
+      //   key: 'username',
+      //   //deferrable: Deferrable.INITIALLY_IMMEDIATE,
+      // },
     },
     description: {
       type: DataTypes.STRING(10000),
