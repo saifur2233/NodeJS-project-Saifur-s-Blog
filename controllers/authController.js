@@ -9,20 +9,20 @@ exports.signUp = catchAsync(async (req, res, next) => {
     status: 'success',
     data: {
       accessToken: token,
-      data: user
-    }
+      data: user,
+    },
   });
 });
 
 exports.signIn = catchAsync(async (req, res, next) => {
   const data = await signinService.login(req.body);
   if (!data) {
-    return next(new AppError('Unauthorized Access', 401))
+    return next(new AppError('Unauthorized Access', 401));
   }
   res.status(200).json({
     status: 'success',
     data: {
-      access_token: data
-    }
+      access_token: data,
+    },
   });
 });

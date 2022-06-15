@@ -8,8 +8,8 @@ exports.createBlog = catchAsync(async (req, res, next) => {
   res.status(201).json({
     status: 'success',
     data: {
-      data: blog
-    }
+      data: blog,
+    },
   });
 });
 
@@ -19,8 +19,8 @@ exports.getAllBlogs = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: 'success',
     data: {
-      data: blogs
-    }
+      data: blogs,
+    },
   });
 });
 
@@ -34,8 +34,8 @@ exports.searchBlogById = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: 'success',
     data: {
-      data: blog
-    }
+      data: blog,
+    },
   });
 });
 
@@ -49,8 +49,8 @@ exports.updateBlog = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: 'success',
     data: {
-      data: blog
-    }
+      data: blog,
+    },
   });
 });
 
@@ -61,5 +61,5 @@ exports.deleteBlog = catchAsync(async (req, res, next) => {
     return next(new AppError('No blog found with that ID', 404));
   }
 
-  res.status(204).json({ });
+  res.status(204).json({});
 });

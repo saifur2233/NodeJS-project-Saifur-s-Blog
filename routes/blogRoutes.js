@@ -6,12 +6,12 @@ const router = require('express').Router();
 router
   .route('/')
   .get(blogController.getAllBlogs)
-  .post(blogController.createBlog)
+  .post(blogController.createBlog);
 
 router
   .route('/:id')
   .get(blogController.searchBlogById)
   .put(checkLogin, blogController.updateBlog)
-  .delete(checkLogin, blogController.deleteBlog)
+  .delete(checkLogin, blogController.deleteBlog);
 
 module.exports = router;

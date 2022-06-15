@@ -1,0 +1,20 @@
+{
+  "extends": ["eslint:recommended", "plugin:import/errors", "prettier"],
+  "rules": {
+    "no-console": 1,
+    "prefer-const": 2
+  },
+  "plugins": ["import"],
+  "parser": "@babel/eslint-parser",
+  "parserOptions": {
+    "ecmaVersion": 2019,
+    "sourceType": "module",
+    "requireConfigFile": false
+  },
+  "env": {
+    "commonjs": true,
+    "browser": true,
+    "es6": true,
+    "node": true
+  }
+}

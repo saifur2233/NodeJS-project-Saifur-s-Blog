@@ -8,8 +8,8 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: 'success',
     data: {
-      data: users
-    }
+      data: users,
+    },
   });
 });
 
@@ -23,8 +23,8 @@ exports.searchUserById = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: 'success',
     data: {
-      data: user
-    }
+      data: user,
+    },
   });
 });
 
@@ -34,8 +34,8 @@ exports.updateUser = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: 'success',
     data: {
-      data: user
-    }
+      data: user,
+    },
   });
 });
 

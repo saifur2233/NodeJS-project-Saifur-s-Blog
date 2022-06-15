@@ -2,16 +2,16 @@ module.exports = (sequelize, DataTypes) => {
   const blog = sequelize.define('bloglist', {
     title: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
     },
     author: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: false,
     },
     description: {
       type: DataTypes.STRING(10000),
-      allowNull: false
-    }
-  })
+      allowNull: false,
+    },
+  });
   return blog;
 };

@@ -5,7 +5,7 @@ const createblog = async (data) => {
   const info = {
     title: data.title,
     author: data.author,
-    description: data.description
+    description: data.description,
   };
 
   const blogs = await blog.create(info);
@@ -18,17 +18,16 @@ const getAllBlog = async () => {
 };
 
 const searchById = async (blogId) => {
-  const id = blogId
+  const id = blogId;
   const blogs = await blog.findOne({
-    where: { id }
+    where: { id },
   });
   return blogs;
 };
 
 const updateBlog = async (dataId, data) => {
   const id = dataId;
-  const blogs = await blog.update(data,
-    { where: { id } });
+  const blogs = await blog.update(data, { where: { id } });
   return blogs;
 };
 
