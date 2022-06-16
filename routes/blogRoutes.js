@@ -1,14 +1,11 @@
 const blogController = require('../controllers/blogController.js');
 const protectRoutes = require('../middlewares/protectRoutes.js').protectRoutes;
-const getUsernameFromToken =
-  require('../middlewares/protectRoutes.js').getUsernameFromToken;
-
 const router = require('express').Router();
 
 router
   .route('/')
   .get(blogController.getAllBlogs)
-  .post(blogController.createBlog);
+  .post(protectRoutes('blogcreate'), blogController.createBlog);
 
 router
   .route('/:id')

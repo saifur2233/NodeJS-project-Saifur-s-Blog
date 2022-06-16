@@ -6,7 +6,6 @@ const getUsernameFromToken =
   require('../middlewares/protectRoutes.js').getUsernameFromToken;
 
 exports.createBlog = catchAsync(async (req, res, next) => {
-  req.body.username = getUsernameFromToken(req);
   const blog = await blogService.createblog(req.body);
 
   return contentNegotiation(req, res, blog, 201);

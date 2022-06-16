@@ -2,7 +2,6 @@ const jwt = require('jsonwebtoken');
 const catchAsync = require('../utilities/catchAsync');
 const AppError = require('../utilities/AppError');
 const db = require('../models/index');
-const { get } = require('../routes/blogRoutes');
 const User = db.user;
 const Blog = db.bloglist;
 
@@ -20,6 +19,7 @@ const getUsernameFromToken = (req) => {
 
   const decoded = jwt.verify(token, process.env.JWT_SECRET);
   const { username, userId } = decoded;
+
   return username;
 };
 
@@ -60,6 +60,9 @@ const protectRoutes = (requestRoutes) => {
       } else {
         return next(new AppError('Invalid user request', 401));
       }
+    } else if (requestRoutes == 'blogcreate') {
+      req.body.username = username;
+      next();
     }
   });
 };
