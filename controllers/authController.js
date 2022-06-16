@@ -2,16 +2,12 @@ const signupService = require('../services/signupService');
 const signinService = require('../services/signinService');
 const catchAsync = require('../utilities/catchAsync');
 const AppError = require('../utilities/AppError');
+const contentNegotiation = require('../middlewares/contentNegotiation');
 
 exports.signUp = catchAsync(async (req, res, next) => {
   const { user, token } = await signupService.registration(req.body);
-  res.status(201).json({
-    status: 'success',
-    data: {
-      accessToken: token,
-      data: user,
-    },
-  });
+  const userData = { user, token };
+  return contentNegotiation(req, res, userData, 201);
 });
 
 exports.signIn = catchAsync(async (req, res, next) => {
@@ -19,10 +15,5 @@ exports.signIn = catchAsync(async (req, res, next) => {
   if (!data) {
     return next(new AppError('Unauthorized Access', 401));
   }
-  res.status(200).json({
-    status: 'success',
-    data: {
-      access_token: data,
-    },
-  });
+  return contentNegotiation(req, res, data, 200);
 });

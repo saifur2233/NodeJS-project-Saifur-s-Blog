@@ -35,4 +35,4 @@ const sendResponse = (req, res, inputData, statuscode) => {
     },
   });
 };
-module.exports = { sendResponse };
+module.exports = sendResponse;

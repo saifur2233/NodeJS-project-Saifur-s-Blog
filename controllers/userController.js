@@ -1,16 +1,12 @@
 const userService = require('../services/userServices.js');
 const catchAsync = require('../utilities/catchAsync');
 const AppError = require('../utilities/AppError');
+const contentNegotiation = require('../middlewares/contentNegotiation');
 
 exports.getAllUsers = catchAsync(async (req, res, next) => {
   const users = await userService.getAllUser();
 
-  res.status(200).json({
-    status: 'success',
-    data: {
-      data: users,
-    },
-  });
+  return contentNegotiation(req, res, users, 200);
 });
 
 exports.searchUserById = catchAsync(async (req, res, next) => {
@@ -20,23 +16,13 @@ exports.searchUserById = catchAsync(async (req, res, next) => {
     return next(new AppError('No user found with that ID', 404));
   }
 
-  res.status(200).json({
-    status: 'success',
-    data: {
-      data: user,
-    },
-  });
+  return contentNegotiation(req, res, user, 200);
 });
 
 exports.updateUser = catchAsync(async (req, res, next) => {
   const user = await userService.updateUser(req.params.id, req.body);
 
-  res.status(200).json({
-    status: 'success',
-    data: {
-      data: user,
-    },
-  });
+  return contentNegotiation(req, res, user, 200);
 });
 
 exports.deleteUser = catchAsync(async (req, res, next) => {
