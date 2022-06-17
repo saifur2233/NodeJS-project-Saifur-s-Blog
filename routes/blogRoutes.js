@@ -1,16 +1,17 @@
 const blogController = require('../controllers/blogController.js');
-const protectRoutes = require('../middlewares/protectRoutes.js').protectRoutes;
+const protectRoutesBlog = require('../middlewares/protectRoutesBlog');
+const protectRoutesCreateBlog = require('../middlewares/protectRoutesCreateBlog');
 const router = require('express').Router();
 
 router
   .route('/')
   .get(blogController.getAllBlogs)
-  .post(protectRoutes('blogcreate'), blogController.createBlog);
+  .post(protectRoutesCreateBlog, blogController.createBlog);
 
 router
   .route('/:id')
   .get(blogController.searchBlogById)
-  .put(protectRoutes('myblog'), blogController.updateBlog)
-  .delete(protectRoutes('myblog'), blogController.deleteBlog);
+  .put(protectRoutesBlog, blogController.updateBlog)
+  .delete(protectRoutesBlog, blogController.deleteBlog);
 
 module.exports = router;

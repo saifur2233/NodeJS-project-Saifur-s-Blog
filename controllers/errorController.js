@@ -45,6 +45,7 @@ const handleJwtExpiredError = (err) => {
 
 module.exports = (err, req, res, next) => {
   if (!res.headersSent) {
+    console.log(err);
     err.statusCode = err.statusCode || 500;
     err.status = err.status || 'error';
 

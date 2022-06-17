@@ -2,8 +2,6 @@ const blogService = require('../services/blogServices.js');
 const catchAsync = require('../utilities/catchAsync');
 const AppError = require('../utilities/AppError');
 const contentNegotiation = require('../middlewares/contentNegotiation');
-const getUsernameFromToken =
-  require('../middlewares/protectRoutes.js').getUsernameFromToken;
 
 exports.createBlog = catchAsync(async (req, res, next) => {
   const blog = await blogService.createblog(req.body);
