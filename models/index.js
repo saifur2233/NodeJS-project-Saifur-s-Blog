@@ -28,9 +28,6 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-db.user = require('./userModel.js')(sequelize, DataTypes);
-db.bloglist = require('./blogModel.js')(sequelize, DataTypes);
-
 db.sequelize.sync({ force: false }).then(() => {
   console.log('Database Sync done');
 });

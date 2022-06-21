@@ -1,7 +1,6 @@
-const db = require('../models');
+const User = require('../models/userModel');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const User = db.user;
 
 const login = async (signinData) => {
   const { username, password } = signinData;

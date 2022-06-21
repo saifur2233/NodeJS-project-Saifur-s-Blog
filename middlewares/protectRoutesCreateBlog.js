@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const catchAsync = require('../utilities/catchAsync');
 const AppError = require('../utilities/AppError');
 
-const protectRoutesUser = catchAsync(async (req, res, next) => {
+const protectRoutesCreateBlog = catchAsync(async (req, res, next) => {
   let token;
   if (
     req.headers.authorization &&
@@ -21,4 +21,4 @@ const protectRoutesUser = catchAsync(async (req, res, next) => {
   next();
 });
 
-module.exports = protectRoutesUser;
+module.exports = protectRoutesCreateBlog;

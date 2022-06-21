@@ -1,8 +1,7 @@
 const jwt = require('jsonwebtoken');
 const catchAsync = require('../utilities/catchAsync');
 const AppError = require('../utilities/AppError');
-const db = require('../models/index');
-const User = db.user;
+const User = require('../models/userModel');
 
 const protectRoutesUser = catchAsync(async (req, res, next) => {
   let token;
@@ -30,7 +29,7 @@ const protectRoutesUser = catchAsync(async (req, res, next) => {
   }
 
   const requestId = Number(req.params.id);
-  if (requestId === freshUser.id) {
+  if (requestId == freshUser.id) {
     next();
   } else {
     return next(new AppError('Invalid user request', 401));

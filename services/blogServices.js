@@ -1,5 +1,4 @@
-const db = require('../models');
-const blog = db.bloglist;
+const blog = require('../models/blogModel');
 
 const createblog = async (data) => {
   const info = {
