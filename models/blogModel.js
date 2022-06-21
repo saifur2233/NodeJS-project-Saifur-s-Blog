@@ -1,9 +1,9 @@
-const db = require('./index');
-const { DataTypes } = require('sequelize');
+const db = require('../dbconfig/config');
+const Sequelize = require('sequelize');
 
-const blog = db.sequelize.define('bloglist', {
+const blog = db.define('bloglist', {
   title: {
-    type: DataTypes.STRING,
+    type: Sequelize.STRING,
     allowNull: false,
     validate: {
       notNull: {
@@ -15,11 +15,11 @@ const blog = db.sequelize.define('bloglist', {
     },
   },
   username: {
-    type: DataTypes.STRING,
+    type: Sequelize.STRING,
     allowNull: false,
   },
   description: {
-    type: DataTypes.STRING(10000),
+    type: Sequelize.STRING(10000),
     allowNull: false,
     validate: {
       notNull: {

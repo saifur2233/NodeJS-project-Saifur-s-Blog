@@ -5,13 +5,14 @@ const globalErrorHandler = require('./controllers/errorController.js');
 const blogRouter = require('./routes/blogRoutes.js');
 const userRouter = require('./routes/userRoutes.js');
 const authRouter = require('./routes/authRoutes');
+const connectdb = require('./models/index');
 require('dotenv').config();
 const app = express();
 
 const corsOptions = {
   origin: 'https://localhost:8030',
 };
-
+connectdb.connect();
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

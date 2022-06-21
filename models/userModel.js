@@ -1,9 +1,9 @@
-const db = require('./index');
-const { DataTypes } = require('sequelize');
+const db = require('../dbconfig/config');
+const Sequelize = require('sequelize');
 
-const User = db.sequelize.define('users', {
+const User = db.define('users', {
   name: {
-    type: DataTypes.STRING,
+    type: Sequelize.STRING,
     allowNull: false,
     validate: {
       notNull: {
@@ -23,7 +23,7 @@ const User = db.sequelize.define('users', {
     },
   },
   username: {
-    type: DataTypes.STRING,
+    type: Sequelize.STRING,
     unique: true,
     allowNull: false,
     isLowercase: true,
@@ -42,7 +42,7 @@ const User = db.sequelize.define('users', {
     },
   },
   email: {
-    type: DataTypes.STRING,
+    type: Sequelize.STRING,
     allowNull: false,
     isEmail: true,
     validate: {
@@ -55,7 +55,7 @@ const User = db.sequelize.define('users', {
     },
   },
   password: {
-    type: DataTypes.STRING,
+    type: Sequelize.STRING,
     allowNull: false,
     validate: {
       notNull: {
@@ -71,7 +71,7 @@ const User = db.sequelize.define('users', {
     },
   },
   status: {
-    type: DataTypes.STRING,
+    type: Sequelize.STRING,
     defaultValue: 'inactive',
   },
 });
