@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 require('dotenv').config();
 
 const database = 'myblog_db';
-const db_user = 'mysql';
+const db_user = 'root';
 const password = '';
 const host_url = 'localhost';
 
