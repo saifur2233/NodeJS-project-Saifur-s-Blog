@@ -10,17 +10,15 @@ exports.createBlog = catchAsync(async (req, res, next) => {
     return next(new AppError('Failed blog create process', 404));
   }
 
-  return contentNegotiation(req, res, blog, 201);
+  return contentNegotiation.sendResponse(req, res, blog, 201);
 });
 
 exports.getAllBlogs = catchAsync(async (req, res, next) => {
   const blogs = await blogService.getAllBlog();
-
   if (!blogs) {
     return next(new AppError('No blog found', 404));
   }
-
-  return contentNegotiation(req, res, blogs, 200);
+  return contentNegotiation.sendResponse(req, res, blogs, 200);
 });
 
 exports.searchBlogById = catchAsync(async (req, res, next) => {
@@ -30,7 +28,7 @@ exports.searchBlogById = catchAsync(async (req, res, next) => {
     return next(new AppError('No blog found with that ID', 404));
   }
 
-  return contentNegotiation(req, res, blog, 200);
+  return contentNegotiation.sendResponse(req, res, blog, 200);
 });
 
 exports.updateBlog = catchAsync(async (req, res, next) => {
@@ -40,7 +38,7 @@ exports.updateBlog = catchAsync(async (req, res, next) => {
     return next(new AppError('Failed Blog update process', 404));
   }
 
-  return contentNegotiation(req, res, blog, 200);
+  return contentNegotiation.sendResponse(req, res, blog, 200);
 });
 
 exports.deleteBlog = catchAsync(async (req, res, next) => {

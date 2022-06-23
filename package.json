@@ -22,6 +22,7 @@
     "json-to-plain-text": "^1.0.3",
     "jsonwebtoken": "^8.5.1",
     "mysql2": "^2.3.3",
+    "node-mocks-http": "^1.11.0",
     "nodemon": "^2.0.16",
     "sequelize": "^6.20.1",
     "x2js": "^3.4.3"

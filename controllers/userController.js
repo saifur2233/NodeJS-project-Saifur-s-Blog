@@ -5,11 +5,10 @@ const contentNegotiation = require('../middlewares/contentNegotiation');
 
 exports.getAllUsers = catchAsync(async (req, res, next) => {
   const users = await userService.getAllUser();
-
   if (!users) {
     return next(new AppError('No user found', 404));
   }
-  return contentNegotiation(req, res, users, 200);
+  return contentNegotiation.sendResponse(req, res, users, 200);
 });
 
 exports.searchUserById = catchAsync(async (req, res, next) => {
@@ -19,7 +18,7 @@ exports.searchUserById = catchAsync(async (req, res, next) => {
     return next(new AppError('No user found with that ID', 404));
   }
 
-  return contentNegotiation(req, res, user, 200);
+  return contentNegotiation.sendResponse(req, res, user, 200);
 });
 
 exports.updateUser = catchAsync(async (req, res, next) => {
@@ -28,7 +27,7 @@ exports.updateUser = catchAsync(async (req, res, next) => {
   if (!user) {
     return next(new AppError('Failed update process', 404));
   }
-  return contentNegotiation(req, res, user, 200);
+  return contentNegotiation.sendResponse(req, res, user, 200);
 });
 
 exports.deleteUser = catchAsync(async (req, res) => {

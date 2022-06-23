@@ -10,7 +10,7 @@ exports.signUp = catchAsync(async (req, res, next) => {
   if (!token || !user) {
     return next(new AppError('User sign up failed', 401));
   }
-  return contentNegotiation(req, res, userData, 201);
+  return contentNegotiation.sendResponse(req, res, userData, 201);
 });
 
 exports.signIn = catchAsync(async (req, res, next) => {
@@ -18,5 +18,5 @@ exports.signIn = catchAsync(async (req, res, next) => {
   if (!data) {
     return next(new AppError('Unauthorized Access', 401));
   }
-  return contentNegotiation(req, res, data, 200);
+  return contentNegotiation.sendResponse(req, res, data, 200);
 });
