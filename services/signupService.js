@@ -26,7 +26,7 @@ const registration = async (data) => {
     }
   );
 
-  return { user, token };
+  return { ...user, token };
 };
 
 module.exports = { registration };

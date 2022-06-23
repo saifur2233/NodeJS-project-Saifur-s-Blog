@@ -6,11 +6,19 @@ const contentNegotiation = require('../middlewares/contentNegotiation');
 exports.createBlog = catchAsync(async (req, res, next) => {
   const blog = await blogService.createblog(req.body);
 
+  if (!blog) {
+    return next(new AppError('Failed blog create process', 404));
+  }
+
   return contentNegotiation(req, res, blog, 201);
 });
 
 exports.getAllBlogs = catchAsync(async (req, res, next) => {
   const blogs = await blogService.getAllBlog();
+
+  if (!blogs) {
+    return next(new AppError('No blog found', 404));
+  }
 
   return contentNegotiation(req, res, blogs, 200);
 });
@@ -29,7 +37,7 @@ exports.updateBlog = catchAsync(async (req, res, next) => {
   const blog = await blogService.updateBlog(req.params.id, req.body);
 
   if (!blog) {
-    return next(new AppError('No blog found with that ID', 404));
+    return next(new AppError('Failed Blog update process', 404));
   }
 
   return contentNegotiation(req, res, blog, 200);

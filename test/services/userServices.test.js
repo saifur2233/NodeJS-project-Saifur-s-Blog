@@ -31,9 +31,33 @@ describe('user service test', () => {
     expect(allUsers).toBe(dummyUsers);
   });
 
-  // test('Search user by ID', async (userId) => {
-  //   jest.spyOn(Users, 'findOne').mockReturnValue(dummyUsers);
-  //   const user = await userService.searchById();
-  //   expect(user).toBe(dummyUsers);
-  // });
+  test('Search user by ID', async () => {
+    jest.spyOn(Users, 'findOne').mockReturnValue(dummyUsers[0]);
+    const { id } = dummyUsers[0];
+    const user = await userService.searchById(id);
+    expect(Users.findOne).toHaveBeenCalledTimes(1);
+    expect(Users.findOne).toHaveBeenCalledWith({
+      where: { id },
+    });
+    expect(user).toBe(dummyUsers[0]);
+  });
+
+  test('Update user info', async () => {
+    jest.spyOn(Users, 'update').mockReturnValue(1);
+    const { id, name, username, email } = dummyUsers[0];
+    const info = { name, username, email };
+    const user = await userService.updateUser(id, info);
+    expect(Users.update).toHaveBeenCalledTimes(1);
+    expect(Users.update).toHaveBeenCalledWith(info, { where: { id } });
+    expect(user).toBe(1);
+  });
+
+  test('User Delete', async () => {
+    jest.spyOn(Users, 'destroy').mockReturnValue();
+    const { id } = dummyUsers[0];
+    const user = await userService.deleteUser(id);
+    expect(Users.destroy).toHaveBeenCalledTimes(1);
+    expect(Users.destroy).toHaveBeenCalledWith({ where: { id } });
+    expect(user).toBe();
+  });
 });

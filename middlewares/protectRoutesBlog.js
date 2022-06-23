@@ -17,7 +17,7 @@ const protectRoutesBlog = catchAsync(async (req, res, next) => {
   }
 
   const decoded = jwt.verify(token, process.env.JWT_SECRET);
-  const { username, userId } = decoded;
+  const { username } = decoded;
 
   const findblog = await Blog.findOne({
     where: {

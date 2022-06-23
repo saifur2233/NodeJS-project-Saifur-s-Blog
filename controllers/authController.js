@@ -7,6 +7,9 @@ const contentNegotiation = require('../middlewares/contentNegotiation');
 exports.signUp = catchAsync(async (req, res, next) => {
   const { user, token } = await signupService.registration(req.body);
   const userData = { user, token };
+  if (!token || !user) {
+    return next(new AppError('User sign up failed', 401));
+  }
   return contentNegotiation(req, res, userData, 201);
 });
 

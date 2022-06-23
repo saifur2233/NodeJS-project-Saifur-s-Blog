@@ -1,5 +1,7 @@
-module.exports = (fn) => {
-  return (req, res, next) => {
-    fn(req, res, next).catch(next);
-  };
+module.exports = (fn) => async (req, res, next) => {
+  try {
+    return await fn(req, res, next);
+  } catch (err) {
+    next(err);
+  }
 };
