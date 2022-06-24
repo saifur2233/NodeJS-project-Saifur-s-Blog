@@ -13,6 +13,7 @@
   },
   "env": {
     "commonjs": true,
+    "noUnusedLocals": false,
     "browser": true,
     "es6": true,
     "node": true,

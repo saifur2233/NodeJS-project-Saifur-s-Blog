@@ -1,0 +1,6 @@
+{
+  "liveServer.settings.ChromeDebuggingAttachment": false,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "prettier.requireConfig": true,
+  "editor.formatOnSave": true
+}

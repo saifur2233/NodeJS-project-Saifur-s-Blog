@@ -63,4 +63,88 @@ describe('user controller testing', () => {
     expect(mres.statusCode).toBe(mystatus);
     expect(mResData).toEqual(myUsers);
   });
+
+  test('Search user by Id testing process', async () => {
+    jest.spyOn(userService, 'searchById').mockReturnValue(myUsers[0]);
+    const { id } = myUsers[0];
+    const searchingId = id;
+    const mreq = httpMocks.createRequest({
+      headers: {
+        accept: 'application/json',
+      },
+      method: 'GET',
+      params: {
+        id: id,
+      },
+    });
+    const mres = httpMocks.createResponse();
+    const mnext = jest.fn();
+    const mystatus = 200;
+    await userController.searchUserById(mreq, mres, mnext);
+    const mResData = mres._getJSONData();
+    expect(userService.searchById).toHaveBeenCalledTimes(1);
+    expect(userService.searchById).toHaveBeenCalledWith(searchingId);
+    expect(contentNegotiation.sendResponse).toHaveBeenCalledTimes(1);
+    expect(contentNegotiation.sendResponse).toHaveBeenCalledWith(
+      mreq,
+      mres,
+      myUsers[0],
+      mystatus
+    );
+    expect(mres.statusCode).toBe(mystatus);
+    expect(mResData).toBeTruthy();
+  });
+
+  test('Update blog by Id testing process', async () => {
+    jest.spyOn(userService, 'updateUser').mockReturnValue(1);
+    const { id, name, email, password } = myUsers[0];
+    const searchingId = id;
+    const info = { name, email, password };
+    const mreq = httpMocks.createRequest({
+      method: 'PUT',
+      params: {
+        id: id,
+      },
+      body: {
+        name: info.name,
+        email: info.email,
+        password: info.password,
+      },
+    });
+    const mres = httpMocks.createResponse();
+    const mnext = jest.fn();
+    const mystatus = 200;
+    await userController.updateUser(mreq, mres, mnext);
+    const mResData = mres._getJSONData();
+    expect(userService.updateUser).toHaveBeenCalledTimes(1);
+    expect(userService.updateUser).toHaveBeenCalledWith(searchingId, info);
+    expect(contentNegotiation.sendResponse).toHaveBeenCalledTimes(1);
+    expect(contentNegotiation.sendResponse).toHaveBeenCalledWith(
+      mreq,
+      mres,
+      1,
+      mystatus
+    );
+    expect(mres.statusCode).toBe(mystatus);
+    expect(mResData).toBe(1);
+  });
+
+  test('User Delete by id testing process', async () => {
+    jest.spyOn(userService, 'deleteUser').mockReturnValue(myUsers[0]);
+    const { id } = myUsers[0];
+    const userId = id;
+    const mreq = httpMocks.createRequest({
+      method: 'DELETE',
+      params: {
+        id: id,
+      },
+    });
+    const mres = httpMocks.createResponse();
+    const mnext = jest.fn();
+    const mystatus = 204;
+    await userController.deleteUser(mreq, mres, mnext);
+    expect(userService.deleteUser).toHaveBeenCalledTimes(1);
+    expect(userService.deleteUser).toHaveBeenCalledWith(userId);
+    expect(mres.statusCode).toBe(mystatus);
+  });
 });
