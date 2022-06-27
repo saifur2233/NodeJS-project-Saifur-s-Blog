@@ -2,8 +2,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const signupService = require('../../services/signupService');
 const Users = require('../../models/userModel');
-// mock user name
-const dummyUsers = [
+const myUsers = [
   {
     name: 'Saifur Rahman',
     username: 'saifur1',
@@ -29,12 +28,12 @@ describe('User Sign Up', () => {
     const token =
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNhaWZ1cjEiLCJpYXQiOjE2NTU4OTAwODksImV4cCI6MTY2MzY2NjA4OX0.stF4hbNyCFUQGS6MloWxyIfHRY3MKr4JpeVesYiLz_0';
 
-    const user = await signupService.registration(dummyUsers[0]);
+    const user = await signupService.registration(myUsers[0]);
     expect(Users.create).toHaveBeenCalledTimes(1);
     expect(bcrypt.hash).toHaveBeenCalledTimes(1);
     expect(jwt.sign).toHaveBeenCalledTimes(1);
-    expect(Users.create).toHaveBeenCalledWith(dummyUsers[0]);
-    expect(bcrypt.hash).toHaveBeenCalledWith(dummyUsers[0].password, 10);
-    expect(user).toEqual({ ...dummyUsers[0], token });
+    expect(Users.create).toHaveBeenCalledWith(myUsers[0]);
+    expect(bcrypt.hash).toHaveBeenCalledWith(myUsers[0].password, 10);
+    expect(user).toEqual(token);
   });
 });

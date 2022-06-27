@@ -30,6 +30,7 @@ const login = async (signinData) => {
       expiresIn: process.env.JWT_EXPIRES_TIME,
     }
   );
+
   return token;
 };
 

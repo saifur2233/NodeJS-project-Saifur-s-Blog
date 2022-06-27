@@ -13,7 +13,7 @@ const registration = async (data) => {
     status: data.status,
   };
 
-  const user = await User.create(info);
+  await User.create(info);
 
   const token = jwt.sign(
     {
@@ -26,7 +26,7 @@ const registration = async (data) => {
     }
   );
 
-  return { ...user, token };
+  return token;
 };
 
 module.exports = { registration };

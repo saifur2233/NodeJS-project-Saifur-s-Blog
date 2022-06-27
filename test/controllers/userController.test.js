@@ -2,6 +2,7 @@ const httpMocks = require('node-mocks-http');
 const userService = require('../../services/userServices');
 const userController = require('../../controllers/userController');
 const contentNegotiation = require('../../middlewares/contentNegotiation');
+const AppError = require('../../utilities/AppError');
 
 const myUsers = [
   {
@@ -27,72 +28,127 @@ const myUsers = [
 ];
 
 describe('user controller testing', () => {
-  beforeEach(() => {});
-
   afterEach(() => {
     jest.clearAllMocks();
   });
 
-  test('Get all users testing process', async () => {
-    jest
-      .spyOn(contentNegotiation, 'sendResponse')
-      .mockImplementation((req, res, inputData, statuscode) => {
-        res.statusCode = statuscode || 200;
-        return res.json(inputData);
-      });
-    jest.spyOn(userService, 'getAllUser').mockReturnValue(myUsers);
-    const mreq = httpMocks.createRequest({
-      headers: {
-        accept: 'application/json',
-      },
+  describe('all condition check for get all user', () => {
+    afterEach(() => {
+      jest.clearAllMocks();
     });
-    const mres = httpMocks.createResponse();
-    const mnext = jest.fn();
-    const mystatus = 200;
-    await userController.getAllUsers(mreq, mres, mnext);
-    const mResData = mres._getJSONData();
-    expect(userService.getAllUser).toHaveBeenCalledTimes(1);
-    expect(userService.getAllUser).toHaveBeenCalledWith();
-    expect(contentNegotiation.sendResponse).toHaveBeenCalledTimes(1);
-    expect(contentNegotiation.sendResponse).toHaveBeenCalledWith(
-      mreq,
-      mres,
-      myUsers,
-      mystatus
-    );
-    expect(mres.statusCode).toBe(mystatus);
-    expect(mResData).toEqual(myUsers);
+
+    test('Get all users testing process', async () => {
+      jest
+        .spyOn(contentNegotiation, 'sendResponse')
+        .mockImplementation((req, res, inputData, statuscode) => {
+          res.statusCode = statuscode || 200;
+          return res.json(inputData);
+        });
+      jest.spyOn(userService, 'getAllUser').mockReturnValue(myUsers);
+      const mreq = httpMocks.createRequest({
+        headers: {
+          accept: 'application/json',
+        },
+      });
+      const mres = httpMocks.createResponse();
+      const mnext = jest.fn();
+      const mystatus = 200;
+      await userController.getAllUsers(mreq, mres, mnext);
+      const mResData = mres._getJSONData();
+      expect(userService.getAllUser).toHaveBeenCalledTimes(1);
+      expect(userService.getAllUser).toHaveBeenCalledWith();
+      expect(contentNegotiation.sendResponse).toHaveBeenCalledTimes(1);
+      expect(contentNegotiation.sendResponse).toHaveBeenCalledWith(
+        mreq,
+        mres,
+        myUsers,
+        mystatus
+      );
+      expect(mres.statusCode).toBe(mystatus);
+      expect(mResData).toEqual(myUsers);
+    });
+
+    test('if condition test for get all user', async () => {
+      jest
+        .spyOn(contentNegotiation, 'sendResponse')
+        .mockImplementation((req, res, inputData, statuscode) => {
+          res.statusCode = statuscode || 200;
+          return res.json(inputData);
+        });
+      jest.spyOn(userService, 'getAllUser').mockReturnValue(null);
+      const mreq = httpMocks.createRequest({
+        headers: {
+          accept: 'application/json',
+        },
+      });
+      const mres = httpMocks.createResponse();
+      const mnext = jest.fn();
+      const myError = new AppError('No user found', 404);
+      await userController.getAllUsers(mreq, mres, mnext);
+      expect(userService.getAllUser).toHaveBeenCalledTimes(1);
+      expect(userService.getAllUser).toHaveBeenCalledWith();
+      expect(mnext).toHaveBeenCalledTimes(1);
+      expect(mnext).toHaveBeenCalledWith(myError);
+      expect(contentNegotiation.sendResponse).toHaveBeenCalledTimes(0);
+    });
   });
 
-  test('Search user by Id testing process', async () => {
-    jest.spyOn(userService, 'searchById').mockReturnValue(myUsers[0]);
-    const { id } = myUsers[0];
-    const searchingId = id;
-    const mreq = httpMocks.createRequest({
-      headers: {
-        accept: 'application/json',
-      },
-      method: 'GET',
-      params: {
-        id: id,
-      },
+  describe('All condition testing for search user by id', () => {
+    test('Search user by Id testing process', async () => {
+      jest.spyOn(userService, 'searchById').mockReturnValue(myUsers[0]);
+      const { id } = myUsers[0];
+      const searchingId = id;
+      const mreq = httpMocks.createRequest({
+        headers: {
+          accept: 'application/json',
+        },
+        method: 'GET',
+        params: {
+          id: id,
+        },
+      });
+      const mres = httpMocks.createResponse();
+      const mnext = jest.fn();
+      const mystatus = 200;
+      await userController.searchUserById(mreq, mres, mnext);
+      const mResData = mres._getJSONData();
+      expect(userService.searchById).toHaveBeenCalledTimes(1);
+      expect(userService.searchById).toHaveBeenCalledWith(searchingId);
+      expect(contentNegotiation.sendResponse).toHaveBeenCalledTimes(1);
+      expect(contentNegotiation.sendResponse).toHaveBeenCalledWith(
+        mreq,
+        mres,
+        myUsers[0],
+        mystatus
+      );
+      expect(mres.statusCode).toBe(mystatus);
+      expect(mResData).toBeTruthy();
     });
-    const mres = httpMocks.createResponse();
-    const mnext = jest.fn();
-    const mystatus = 200;
-    await userController.searchUserById(mreq, mres, mnext);
-    const mResData = mres._getJSONData();
-    expect(userService.searchById).toHaveBeenCalledTimes(1);
-    expect(userService.searchById).toHaveBeenCalledWith(searchingId);
-    expect(contentNegotiation.sendResponse).toHaveBeenCalledTimes(1);
-    expect(contentNegotiation.sendResponse).toHaveBeenCalledWith(
-      mreq,
-      mres,
-      myUsers[0],
-      mystatus
-    );
-    expect(mres.statusCode).toBe(mystatus);
-    expect(mResData).toBeTruthy();
+
+    test('if condition test for search user by id', async () => {
+      jest.spyOn(userService, 'searchById').mockReturnValue(null);
+      const { id } = myUsers[0];
+      const searchingId = id;
+      const mreq = httpMocks.createRequest({
+        headers: {
+          accept: 'application/json',
+        },
+        method: 'GET',
+        params: {
+          id: id,
+        },
+      });
+      const mres = httpMocks.createResponse();
+      const mnext = jest.fn();
+      const mystatus = 200;
+      await userController.searchUserById(mreq, mres, mnext);
+      const myError = new AppError('No user found with that ID', 404);
+      expect(userService.searchById).toHaveBeenCalledTimes(1);
+      expect(userService.searchById).toHaveBeenCalledWith(searchingId);
+      expect(mnext).toHaveBeenCalledTimes(1);
+      expect(mnext).toHaveBeenCalledWith(myError);
+      expect(contentNegotiation.sendResponse).toHaveBeenCalledTimes(0);
+    });
   });
 
   test('Update blog by Id testing process', async () => {
