@@ -1,7 +1,7 @@
 const userService = require('../../services/userServices');
 const Users = require('../../models/userModel');
 
-const dummyUsers = [
+const myUsers = [
   {
     id: 1,
     name: 'Saifur Rahman',
@@ -26,25 +26,25 @@ const dummyUsers = [
 
 describe('user service test', () => {
   test('Get all user', async () => {
-    jest.spyOn(Users, 'findAll').mockReturnValue(dummyUsers);
+    jest.spyOn(Users, 'findAll').mockReturnValue(myUsers);
     const allUsers = await userService.getAllUser();
-    expect(allUsers).toBe(dummyUsers);
+    expect(allUsers).toBe(myUsers);
   });
 
   test('Search user by ID', async () => {
-    jest.spyOn(Users, 'findOne').mockReturnValue(dummyUsers[0]);
-    const { id } = dummyUsers[0];
+    jest.spyOn(Users, 'findOne').mockReturnValue(myUsers[0]);
+    const { id } = myUsers[0];
     const user = await userService.searchById(id);
     expect(Users.findOne).toHaveBeenCalledTimes(1);
     expect(Users.findOne).toHaveBeenCalledWith({
       where: { id },
     });
-    expect(user).toBe(dummyUsers[0]);
+    expect(user).toBe(myUsers[0]);
   });
 
   test('Update user info', async () => {
     jest.spyOn(Users, 'update').mockReturnValue(1);
-    const { id, name, username, email } = dummyUsers[0];
+    const { id, name, username, email } = myUsers[0];
     const info = { name, username, email };
     const user = await userService.updateUser(id, info);
     expect(Users.update).toHaveBeenCalledTimes(1);
@@ -54,7 +54,7 @@ describe('user service test', () => {
 
   test('User Delete', async () => {
     jest.spyOn(Users, 'destroy').mockReturnValue();
-    const { id } = dummyUsers[0];
+    const { id } = myUsers[0];
     const user = await userService.deleteUser(id);
     expect(Users.destroy).toHaveBeenCalledTimes(1);
     expect(Users.destroy).toHaveBeenCalledWith({ where: { id } });

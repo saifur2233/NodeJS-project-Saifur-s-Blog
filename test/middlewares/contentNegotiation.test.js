@@ -1,6 +1,3 @@
-const X2JS = require('x2js');
-const JS2PT = require('json-to-plain-text');
-const json2html = require('json-to-html');
 const httpMocks = require('node-mocks-http');
 const contentNegotiation = require('../../middlewares/contentNegotiation');
 
@@ -15,8 +12,16 @@ const myBlog = [
   },
 ];
 
-const jsonData = `{createdAt: '2022-06-21T12:00:22.000Z',description: 'hekknhkfnghdfdfdfdfdfdfdfdfdfdfdfdfhvvdlknkvsdnnnlsdf',id: 1,title: 'Hi Everyone, i am saifur',updatedAt: '2022-06-22T05:45:27.000Z',username: 'saifur1',
-}`;
+const jsonData = [
+  {
+    id: 1,
+    title: 'Hi Everyone, i am saifur',
+    username: 'saifur1',
+    description: 'hekknhkfnghdfdfdfdfdfdfdfdfdfdfdfdfhvvdlknkvsdnnnlsdf',
+    createdAt: '2022-06-21T12:00:22.000Z',
+    updatedAt: '2022-06-22T05:45:27.000Z',
+  },
+];
 
 const plainData = `
 id                  : 1
@@ -70,7 +75,7 @@ describe('content negotiation testing', () => {
     const mStatus = 201;
     await contentNegotiation.sendResponse(mreq, mres, myBlog[0], mStatus);
     const data = mres.send()._getData();
-    //expect(data).toBe(htmlData);
+    expect(data).toBeTruthy();
     expect(mres.statusCode).toBe(mStatus);
   });
 
@@ -85,7 +90,7 @@ describe('content negotiation testing', () => {
     });
     await contentNegotiation.sendResponse(mreq, mres, myBlog[0]);
     const data = mres.send()._getData();
-    //expect(data).toBe(plainData);
+    expect(data).toBeTruthy();
     expect(mres.statusCode).toBe(200);
   });
 
@@ -100,7 +105,7 @@ describe('content negotiation testing', () => {
     });
     await contentNegotiation.sendResponse(mreq, mres, myBlog[0]);
     const data = mres.send()._getData();
-    //expect(data).toEqual(jsonData);
+    expect(data).toEqual(jsonData[0]);
     expect(mres.statusCode).toBe(200);
   });
 
@@ -115,7 +120,7 @@ describe('content negotiation testing', () => {
     });
     await contentNegotiation.sendResponse(mreq, mres, myBlog[0]);
     const data = mres.send()._getData();
-    //expect(data).toEqual(jsonData);
+    expect(data).toEqual(jsonData[0]);
     expect(mres.statusCode).toBe(200);
   });
 });

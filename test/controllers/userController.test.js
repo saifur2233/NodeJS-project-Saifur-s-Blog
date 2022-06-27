@@ -33,17 +33,20 @@ describe('user controller testing', () => {
   });
 
   describe('all condition check for get all user', () => {
-    afterEach(() => {
-      jest.clearAllMocks();
-    });
-
-    test('Get all users testing process', async () => {
+    beforeEach(() => {
       jest
         .spyOn(contentNegotiation, 'sendResponse')
         .mockImplementation((req, res, inputData, statuscode) => {
           res.statusCode = statuscode || 200;
           return res.json(inputData);
         });
+    });
+
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+
+    test('Get all users testing process', async () => {
       jest.spyOn(userService, 'getAllUser').mockReturnValue(myUsers);
       const mreq = httpMocks.createRequest({
         headers: {
@@ -69,12 +72,6 @@ describe('user controller testing', () => {
     });
 
     test('if condition test for get all user', async () => {
-      jest
-        .spyOn(contentNegotiation, 'sendResponse')
-        .mockImplementation((req, res, inputData, statuscode) => {
-          res.statusCode = statuscode || 200;
-          return res.json(inputData);
-        });
       jest.spyOn(userService, 'getAllUser').mockReturnValue(null);
       const mreq = httpMocks.createRequest({
         headers: {
@@ -94,6 +91,19 @@ describe('user controller testing', () => {
   });
 
   describe('All condition testing for search user by id', () => {
+    beforeEach(() => {
+      jest
+        .spyOn(contentNegotiation, 'sendResponse')
+        .mockImplementation((req, res, inputData, statuscode) => {
+          res.statusCode = statuscode || 200;
+          return res.json(inputData);
+        });
+    });
+
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+
     test('Search user by Id testing process', async () => {
       jest.spyOn(userService, 'searchById').mockReturnValue(myUsers[0]);
       const { id } = myUsers[0];
@@ -140,7 +150,6 @@ describe('user controller testing', () => {
       });
       const mres = httpMocks.createResponse();
       const mnext = jest.fn();
-      const mystatus = 200;
       await userController.searchUserById(mreq, mres, mnext);
       const myError = new AppError('No user found with that ID', 404);
       expect(userService.searchById).toHaveBeenCalledTimes(1);
@@ -151,38 +160,80 @@ describe('user controller testing', () => {
     });
   });
 
-  test('Update blog by Id testing process', async () => {
-    jest.spyOn(userService, 'updateUser').mockReturnValue(1);
-    const { id, name, email, password } = myUsers[0];
-    const searchingId = id;
-    const info = { name, email, password };
-    const mreq = httpMocks.createRequest({
-      method: 'PUT',
-      params: {
-        id: id,
-      },
-      body: {
-        name: info.name,
-        email: info.email,
-        password: info.password,
-      },
+  describe('all condition check for update user', () => {
+    beforeEach(() => {
+      jest
+        .spyOn(contentNegotiation, 'sendResponse')
+        .mockImplementation((req, res, inputData, statuscode) => {
+          res.statusCode = statuscode || 200;
+          return res.json(inputData);
+        });
     });
-    const mres = httpMocks.createResponse();
-    const mnext = jest.fn();
-    const mystatus = 200;
-    await userController.updateUser(mreq, mres, mnext);
-    const mResData = mres._getJSONData();
-    expect(userService.updateUser).toHaveBeenCalledTimes(1);
-    expect(userService.updateUser).toHaveBeenCalledWith(searchingId, info);
-    expect(contentNegotiation.sendResponse).toHaveBeenCalledTimes(1);
-    expect(contentNegotiation.sendResponse).toHaveBeenCalledWith(
-      mreq,
-      mres,
-      1,
-      mystatus
-    );
-    expect(mres.statusCode).toBe(mystatus);
-    expect(mResData).toBe(1);
+
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+
+    test('Update blog by Id testing process', async () => {
+      jest.spyOn(userService, 'updateUser').mockReturnValue(1);
+      const { id, name, email, password } = myUsers[0];
+      const searchingId = id;
+      const info = { name, email, password };
+      const mreq = httpMocks.createRequest({
+        method: 'PUT',
+        params: {
+          id: id,
+        },
+        body: {
+          name: info.name,
+          email: info.email,
+          password: info.password,
+        },
+      });
+      const mres = httpMocks.createResponse();
+      const mnext = jest.fn();
+      const mystatus = 200;
+      await userController.updateUser(mreq, mres, mnext);
+      const mResData = mres._getJSONData();
+      expect(userService.updateUser).toHaveBeenCalledTimes(1);
+      expect(userService.updateUser).toHaveBeenCalledWith(searchingId, info);
+      expect(contentNegotiation.sendResponse).toHaveBeenCalledTimes(1);
+      expect(contentNegotiation.sendResponse).toHaveBeenCalledWith(
+        mreq,
+        mres,
+        1,
+        mystatus
+      );
+      expect(mres.statusCode).toBe(mystatus);
+      expect(mResData).toBe(1);
+    });
+
+    test('if condition test for Update blog', async () => {
+      jest.spyOn(userService, 'updateUser').mockReturnValue(0);
+      const { id, name, email, password } = myUsers[0];
+      const searchingId = id;
+      const info = { name, email, password };
+      const mreq = httpMocks.createRequest({
+        method: 'PUT',
+        params: {
+          id: id,
+        },
+        body: {
+          name: info.name,
+          email: info.email,
+          password: info.password,
+        },
+      });
+      const mres = httpMocks.createResponse();
+      const mnext = jest.fn();
+      await userController.updateUser(mreq, mres, mnext);
+      const myError = new AppError('Failed update process', 404);
+      expect(userService.updateUser).toHaveBeenCalledTimes(1);
+      expect(userService.updateUser).toHaveBeenCalledWith(searchingId, info);
+      expect(mnext).toHaveBeenCalledTimes(1);
+      expect(mnext).toHaveBeenCalledWith(myError);
+      expect(contentNegotiation.sendResponse).toHaveBeenCalledTimes(0);
+    });
   });
 
   test('User Delete by id testing process', async () => {

@@ -49,7 +49,6 @@ describe('User Sign in', () => {
     });
 
     const { username, password } = myUser[0];
-    const password2 = 'saifur100';
     const data = { password };
     const valid = await signinService.login(data);
     expect(valid).toEqual(null);

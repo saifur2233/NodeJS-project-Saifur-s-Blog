@@ -24,9 +24,9 @@ exports.searchUserById = catchAsync(async (req, res, next) => {
 exports.updateUser = catchAsync(async (req, res, next) => {
   const user = await userService.updateUser(req.params.id, req.body);
 
-  // if (!user) {
-  //   return next(new AppError('Failed update process', 404));
-  // }
+  if (!user) {
+    return next(new AppError('Failed update process', 404));
+  }
   return contentNegotiation.sendResponse(req, res, user, 200);
 });
 

@@ -150,7 +150,6 @@ describe('Authentication Controller Testing Process', () => {
       });
       const mres = httpMocks.createResponse();
       const mnext = jest.fn();
-      const myData = mres._getJSONData;
       const myError = new AppError('Unauthorized Access', 401);
       await authController.signIn(mreq, mres, mnext);
       expect(signinService.login).toHaveBeenCalledTimes(1);

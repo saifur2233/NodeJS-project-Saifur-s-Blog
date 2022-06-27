@@ -25,20 +25,24 @@ const myBlogs = [
 ];
 
 describe('Blog controller testing', () => {
-  beforeEach(() => {
-    jest
-      .spyOn(contentNegotiation, 'sendResponse')
-      .mockImplementation((req, res, inputData, statuscode) => {
-        res.statusCode = statuscode || 200;
-        return res.json(inputData);
-      });
-  });
-
   afterEach(() => {
     jest.clearAllMocks();
   });
 
   describe('Create blog all condition testing', () => {
+    beforeEach(() => {
+      jest
+        .spyOn(contentNegotiation, 'sendResponse')
+        .mockImplementation((req, res, inputData, statuscode) => {
+          res.statusCode = statuscode || 200;
+          return res.json(inputData);
+        });
+    });
+
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+
     test('Create blog testing process', async () => {
       jest.spyOn(blogService, 'createblog').mockReturnValue(myBlogs[0]);
       const { title, username, description } = myBlogs[0];
@@ -68,65 +72,174 @@ describe('Blog controller testing', () => {
       expect(mres.statusCode).toBe(mystatus);
       expect(mResData).toEqual(myBlogs[0]);
     });
+
+    test('Create blog testing process', async () => {
+      jest.spyOn(blogService, 'createblog').mockReturnValue(null);
+      const { title, username, description } = myBlogs[0];
+      const info = { title, username, description };
+      const mreq = httpMocks.createRequest({
+        method: 'POST',
+        body: {
+          title: info.title,
+          username: info.username,
+          description: info.description,
+        },
+      });
+      const mres = httpMocks.createResponse();
+      const mnext = jest.fn();
+      await blogController.createBlog(mreq, mres, mnext);
+      const myError = new AppError('Blog creation failed!', 404);
+      expect(blogService.createblog).toHaveBeenCalledTimes(1);
+      expect(blogService.createblog).toHaveBeenCalledWith(info);
+      expect(mnext).toHaveBeenCalledTimes(1);
+      expect(mnext).toHaveBeenCalledWith(myError);
+      expect(contentNegotiation.sendResponse).toHaveBeenCalledTimes(0);
+    });
   });
 
-  test('Get all blog testing process', async () => {
-    jest.spyOn(blogService, 'getAllBlog').mockReturnValue(myBlogs);
-    const mreq = httpMocks.createRequest({
-      headers: {
-        accept: 'application/json',
-      },
+  describe('all consition check for get all blog', () => {
+    beforeEach(() => {
+      jest
+        .spyOn(contentNegotiation, 'sendResponse')
+        .mockImplementation((req, res, inputData, statuscode) => {
+          res.statusCode = statuscode || 200;
+          return res.json(inputData);
+        });
     });
-    const mres = httpMocks.createResponse();
-    const mnext = jest.fn();
-    const mystatus = 200;
-    await blogController.getAllBlogs(mreq, mres, mnext);
-    const mResData = mres._getJSONData();
-    expect(blogService.getAllBlog).toHaveBeenCalledTimes(1);
-    expect(blogService.getAllBlog).toHaveBeenCalledWith();
-    expect(contentNegotiation.sendResponse).toHaveBeenCalledTimes(1);
-    expect(contentNegotiation.sendResponse).toHaveBeenCalledWith(
-      mreq,
-      mres,
-      myBlogs,
-      mystatus
-    );
-    expect(mres.statusCode).toBe(mystatus);
-    expect(mResData).toEqual(myBlogs);
+
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+
+    test('Get all blog testing process', async () => {
+      jest.spyOn(blogService, 'getAllBlog').mockReturnValue(myBlogs);
+      const mreq = httpMocks.createRequest({
+        headers: {
+          accept: 'application/json',
+        },
+      });
+      const mres = httpMocks.createResponse();
+      const mnext = jest.fn();
+      const mystatus = 200;
+      await blogController.getAllBlogs(mreq, mres, mnext);
+      const mResData = mres._getJSONData();
+      expect(blogService.getAllBlog).toHaveBeenCalledTimes(1);
+      expect(blogService.getAllBlog).toHaveBeenCalledWith();
+      expect(contentNegotiation.sendResponse).toHaveBeenCalledTimes(1);
+      expect(contentNegotiation.sendResponse).toHaveBeenCalledWith(
+        mreq,
+        mres,
+        myBlogs,
+        mystatus
+      );
+      expect(mres.statusCode).toBe(mystatus);
+      expect(mResData).toEqual(myBlogs);
+    });
+
+    test('if condition testing for get all blogs', async () => {
+      jest.spyOn(blogService, 'getAllBlog').mockReturnValue(null);
+      const mreq = httpMocks.createRequest({
+        headers: {
+          accept: 'application/json',
+        },
+      });
+      const mres = httpMocks.createResponse();
+      const mnext = jest.fn();
+      const mystatus = 200;
+      await blogController.getAllBlogs(mreq, mres, mnext);
+      const myError = new AppError('No blogs found', 404);
+      expect(blogService.getAllBlog).toHaveBeenCalledTimes(1);
+      expect(blogService.getAllBlog).toHaveBeenCalledWith();
+      expect(mnext).toHaveBeenCalledTimes(1);
+      expect(mnext).toHaveBeenCalledWith(myError);
+      expect(contentNegotiation.sendResponse).toHaveBeenCalledTimes(0);
+    });
   });
 
-  test('Search blog by Id testing process', async () => {
-    jest.spyOn(blogService, 'searchById').mockReturnValue(myBlogs[0]);
-    const { id } = myBlogs[0];
-    const searchingId = id;
-    const mreq = httpMocks.createRequest({
-      headers: {
-        accept: 'application/json',
-      },
-      method: 'GET',
-      params: {
-        id: id,
-      },
+  describe('All condition check for search blog by id', () => {
+    beforeEach(() => {
+      jest
+        .spyOn(contentNegotiation, 'sendResponse')
+        .mockImplementation((req, res, inputData, statuscode) => {
+          res.statusCode = statuscode || 200;
+          return res.json(inputData);
+        });
     });
-    const mres = httpMocks.createResponse();
-    const mnext = jest.fn();
-    const mystatus = 200;
-    await blogController.searchBlogById(mreq, mres, mnext);
-    const mResData = mres._getJSONData();
-    expect(blogService.searchById).toHaveBeenCalledTimes(1);
-    expect(blogService.searchById).toHaveBeenCalledWith(searchingId);
-    expect(contentNegotiation.sendResponse).toHaveBeenCalledTimes(1);
-    expect(contentNegotiation.sendResponse).toHaveBeenCalledWith(
-      mreq,
-      mres,
-      myBlogs[0],
-      mystatus
-    );
-    expect(mres.statusCode).toBe(mystatus);
-    expect(mResData).toBeTruthy();
+
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+
+    test('Search blog by Id testing process', async () => {
+      jest.spyOn(blogService, 'searchById').mockReturnValue(myBlogs[0]);
+      const { id } = myBlogs[0];
+      const searchingId = id;
+      const mreq = httpMocks.createRequest({
+        headers: {
+          accept: 'application/json',
+        },
+        method: 'GET',
+        params: {
+          id: id,
+        },
+      });
+      const mres = httpMocks.createResponse();
+      const mnext = jest.fn();
+      const mystatus = 200;
+      await blogController.searchBlogById(mreq, mres, mnext);
+      const mResData = mres._getJSONData();
+      expect(blogService.searchById).toHaveBeenCalledTimes(1);
+      expect(blogService.searchById).toHaveBeenCalledWith(searchingId);
+      expect(contentNegotiation.sendResponse).toHaveBeenCalledTimes(1);
+      expect(contentNegotiation.sendResponse).toHaveBeenCalledWith(
+        mreq,
+        mres,
+        myBlogs[0],
+        mystatus
+      );
+      expect(mres.statusCode).toBe(mystatus);
+      expect(mResData).toBeTruthy();
+    });
+
+    test('Search blog by Id testing process', async () => {
+      jest.spyOn(blogService, 'searchById').mockReturnValue(null);
+      const { id } = myBlogs[0];
+      const searchingId = id;
+      const mreq = httpMocks.createRequest({
+        headers: {
+          accept: 'application/json',
+        },
+        method: 'GET',
+        params: {
+          id: id,
+        },
+      });
+      const mres = httpMocks.createResponse();
+      const mnext = jest.fn();
+      await blogController.searchBlogById(mreq, mres, mnext);
+      const myError = new AppError('No blog found with that ID', 404);
+      expect(blogService.searchById).toHaveBeenCalledTimes(1);
+      expect(blogService.searchById).toHaveBeenCalledWith(searchingId);
+      expect(mnext).toHaveBeenCalledTimes(1);
+      expect(mnext).toHaveBeenCalledWith(myError);
+      expect(contentNegotiation.sendResponse).toHaveBeenCalledTimes(0);
+    });
   });
 
   describe('Blog update all condition testing', () => {
+    beforeEach(() => {
+      jest
+        .spyOn(contentNegotiation, 'sendResponse')
+        .mockImplementation((req, res, inputData, statuscode) => {
+          res.statusCode = statuscode || 200;
+          return res.json(inputData);
+        });
+    });
+
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+
     test('Update blog by Id testing process', async () => {
       jest.spyOn(blogService, 'updateBlog').mockReturnValue(1);
       const { id, title, username, description } = myBlogs[0];
@@ -162,9 +275,9 @@ describe('Blog controller testing', () => {
     });
 
     test('if blog not found for update condition testing', async () => {
-      jest.spyOn(blogService, 'updateBlog').mockReturnValue(1);
+      jest.spyOn(blogService, 'updateBlog').mockReturnValue(0);
       const { id, title, username, description } = myBlogs[0];
-      const searchingId = 100;
+      const searchingId = id;
       const info = { title, username, description };
       const mreq = httpMocks.createRequest({
         method: 'PUT',
@@ -179,17 +292,21 @@ describe('Blog controller testing', () => {
       });
       const mres = httpMocks.createResponse();
       const mnext = jest.fn();
-      const myError = new AppError('Failed Blog update process', 404);
       await blogController.updateBlog(mreq, mres, mnext);
+      const myError = new AppError('Failed update process', 404);
       expect(blogService.updateBlog).toHaveBeenCalledTimes(1);
-      expect(blogService.updateBlog).toHaveBeenCalledWith(id, info);
-      //expect(mres).toHaveBeenCalledTimes(1);
-      //expect(mnext).toHaveBeenCalledWith(myError);
-      //console.log(mnext);
+      expect(blogService.updateBlog).toHaveBeenCalledWith(searchingId, info);
+      expect(mnext).toHaveBeenCalledTimes(1);
+      expect(mnext).toHaveBeenCalledWith(myError);
+      expect(contentNegotiation.sendResponse).toHaveBeenCalledTimes(0);
     });
   });
 
   describe('Blog delete all condition testing', () => {
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+
     test('Blog Delete by id testing process', async () => {
       jest.spyOn(blogService, 'deleteBlog').mockReturnValue(myBlogs[0]);
       const { id } = myBlogs[0];
