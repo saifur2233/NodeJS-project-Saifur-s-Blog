@@ -5,23 +5,23 @@ const getAllUser = async () => {
   return users;
 };
 
-const searchById = async (userId) => {
-  const id = userId;
+const searchById = async (myusername) => {
+  const username = myusername;
   const user = await Users.findOne({
-    where: { id },
+    where: { username },
   });
   return user;
 };
 
-const updateUser = async (userId, data) => {
-  const id = userId;
-  const user = await Users.update(data, { where: { id } });
+const updateUser = async (myusername, data) => {
+  const username = myusername;
+  const user = await Users.update(data, { where: { username } });
   return user;
 };
 
-const deleteUser = async (userId) => {
-  const id = userId;
-  const user = await Users.destroy({ where: { id } });
+const deleteUser = async (myusername) => {
+  const username = myusername;
+  const user = await Users.destroy({ where: { username } });
   return user;
 };
 

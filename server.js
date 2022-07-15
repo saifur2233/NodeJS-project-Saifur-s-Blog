@@ -8,12 +8,9 @@ const authRouter = require('./routes/authRoutes');
 const connectdb = require('./models/index');
 require('dotenv').config();
 const app = express();
-
-const corsOptions = {
-  origin: 'https://localhost:8030',
-};
+app.use(cors());
 connectdb.connect();
-app.use(cors(corsOptions));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -29,7 +26,7 @@ app.all('/*', (req, res, next) => {
 
 app.use(globalErrorHandler);
 
-const PORT = process.env.PORT || 6000;
+const PORT = process.env.PORT || 3001;
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

@@ -21,6 +21,6 @@ exports.signIn = catchAsync(async (req, res, next) => {
 
   res.status(200).json({
     message: 'Login Successfull',
-    'access token': data,
+    accessToken: data,
   });
 });

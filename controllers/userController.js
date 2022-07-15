@@ -15,7 +15,7 @@ exports.searchUserById = catchAsync(async (req, res, next) => {
   const user = await userService.searchById(req.params.id);
 
   if (!user) {
-    return next(new AppError('No user found with that ID', 404));
+    return next(new AppError('No user found with that Username', 404));
   }
 
   return contentNegotiation.sendResponse(req, res, user, 200);

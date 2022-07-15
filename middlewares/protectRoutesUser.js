@@ -28,8 +28,8 @@ const protectRoutesUser = catchAsync(async (req, res, next) => {
     return next(new AppError('The user does not exist.', 401));
   }
 
-  const requestId = Number(req.params.id);
-  if (requestId == freshUser.id) {
+  // const requestId = Number(req.params.id);
+  if (username == freshUser.username) {
     next();
   } else {
     return next(new AppError('Invalid user request', 401));
