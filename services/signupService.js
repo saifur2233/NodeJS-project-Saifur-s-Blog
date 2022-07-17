@@ -3,14 +3,15 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 const registration = async (data) => {
-  const hashedPassword = await bcrypt.hash(data.password, 10);
+  const myPlaintextPassword = data.password;
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(myPlaintextPassword, salt);
 
   const info = {
     name: data.name,
     username: data.username,
     email: data.email,
     password: hashedPassword,
-    status: data.status,
   };
 
   await User.create(info);
