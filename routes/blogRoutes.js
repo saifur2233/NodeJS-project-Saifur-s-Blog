@@ -10,8 +10,9 @@ router
 
 router
   .route('/:id')
-  .get(blogController.searchBlogById)
+  .get(blogController.getAuthorAllBlogs)
   .put(protectRoutesBlog, blogController.updateBlog)
   .delete(protectRoutesBlog, blogController.deleteBlog);
 
+router.route('/search/:id').get(blogController.searchBlogById);
 module.exports = router;

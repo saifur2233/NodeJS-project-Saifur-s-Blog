@@ -21,6 +21,17 @@ exports.getAllBlogs = catchAsync(async (req, res, next) => {
   return contentNegotiation.sendResponse(req, res, blogs, 200);
 });
 
+// get all for a specific author
+exports.getAuthorAllBlogs = catchAsync(async (req, res, next) => {
+  const blogs = await blogService.getAuthorAllBlog(req.params.id);
+
+  if (!blogs) {
+    return next(new AppError('No blogs found', 404));
+  }
+
+  return contentNegotiation.sendResponse(req, res, blogs, 200);
+});
+
 exports.searchBlogById = catchAsync(async (req, res, next) => {
   const blog = await blogService.searchById(req.params.id);
 

@@ -1,5 +1,5 @@
 const blog = require('../models/blogModel');
-
+const { Op } = require('sequelize');
 const createblog = async (data) => {
   const info = {
     title: data.title,
@@ -13,6 +13,17 @@ const createblog = async (data) => {
 
 const getAllBlog = async () => {
   const blogs = await blog.findAll({});
+  return blogs;
+};
+
+const getAuthorAllBlog = async (authorUsername) => {
+  const blogs = await blog.findAll({
+    where: {
+      username: {
+        [Op.like]: '%' + authorUsername + '%',
+      },
+    },
+  });
   return blogs;
 };
 
@@ -36,4 +47,11 @@ const deleteBlog = async (data) => {
   return blogs;
 };
 
-module.exports = { createblog, getAllBlog, searchById, updateBlog, deleteBlog };
+module.exports = {
+  createblog,
+  getAllBlog,
+  getAuthorAllBlog,
+  searchById,
+  updateBlog,
+  deleteBlog,
+};
