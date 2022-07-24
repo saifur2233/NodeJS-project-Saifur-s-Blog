@@ -31,7 +31,7 @@ const login = async (signinData) => {
     }
   );
 
-  return token;
+  return { username, token };
 };
 
 module.exports = { login };

@@ -70,10 +70,6 @@ const User = db.define('users', {
       },
     },
   },
-  status: {
-    type: Sequelize.STRING,
-    defaultValue: 'inactive',
-  },
 });
 
 module.exports = User;

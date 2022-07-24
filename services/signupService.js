@@ -1,21 +1,16 @@
-const User = require('../models/userModel');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-
+const User = require('../models/userModel');
 const registration = async (data) => {
-  const myPlaintextPassword = data.password;
-  const salt = await bcrypt.genSalt(10);
-  const hashedPassword = await bcrypt.hash(myPlaintextPassword, salt);
-
-  const info = {
+  const hashedPassword = await bcrypt.hash(data.password, 10);
+  const myusername = data.username;
+  const userData = {
     name: data.name,
     username: data.username,
     email: data.email,
     password: hashedPassword,
   };
-
-  await User.create(info);
-
+  await User.create(userData);
   const token = jwt.sign(
     {
       username: data.username,
@@ -26,8 +21,6 @@ const registration = async (data) => {
       expiresIn: process.env.JWT_EXPIRES_TIME,
     }
   );
-
-  return token;
+  return { myusername, token };
 };
-
 module.exports = { registration };
