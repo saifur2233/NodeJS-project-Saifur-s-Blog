@@ -7,7 +7,7 @@ exports.signUp = catchAsync(async (req, res, next) => {
   const data = await signupService.registration(req.body);
 
   const { myusername, token } = data;
-  //console.log('this is token', myusername, '====', token);
+  console.log('this is token', myusername, '====', token);
   if (!token) {
     return next(new AppError('User sign up failed', 401));
   }
