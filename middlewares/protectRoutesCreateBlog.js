@@ -4,11 +4,13 @@ const AppError = require('../utilities/AppError');
 
 const protectRoutesCreateBlog = catchAsync(async (req, res, next) => {
   let token;
-  if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith('Bearer')
-  ) {
-    token = req.headers.authorization.split(' ')[1];
+  //console.log('called');
+  //console.log(req.cookies.macaron);
+  //console.log(req.cookies['macaron']);
+  if (req.cookies.macaron) {
+    token = req.cookies.macaron;
+  } else {
+    return undefined;
   }
   if (!token) {
     return next(new AppError('You are not authorized', 400));
