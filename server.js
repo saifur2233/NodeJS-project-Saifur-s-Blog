@@ -1,10 +1,10 @@
 const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
-const AppError = require('./utilities/AppError.js');
-const globalErrorHandler = require('./controllers/errorController.js');
-const blogRouter = require('./routes/blogRoutes.js');
-const userRouter = require('./routes/userRoutes.js');
+const AppError = require('./utilities/appError');
+const globalErrorHandler = require('./controllers/errorController');
+const blogRouter = require('./routes/blogRoutes');
+const userRouter = require('./routes/userRoutes');
 const authRouter = require('./routes/authRoutes');
 const connectdb = require('./models/index');
 require('dotenv').config();
